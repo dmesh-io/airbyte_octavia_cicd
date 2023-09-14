@@ -4,7 +4,7 @@
 source_dir="airbyte_connection_templates"
 
 # Destination directory
-destination_dir="octavia/sources/"
+destination_dir="octavia/"
 
 airbyte_configuration_types=("sources" "destinations" "connections")
 
