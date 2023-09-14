@@ -43,7 +43,5 @@ jobs:
       - name: Deploy octavia
         run: |
           source /tmp/rcfile
-          pwd
-          ls
-          ./copy_template_files.sh
+          sudo ./copy_template_files.sh
           cd octavia && octavia apply
