@@ -17,24 +17,30 @@ jobs:
         run: |
           git clone --depth=1 https://github.com/airbytehq/airbyte.git
 
-      - name: Airbyte Startup in Background
-        run: |
-
       - name: Install Octavia cli
         run: |
           bash ./octavia_installer.sh
           source /home/runner/.bashrc
 
+      - name: Start Airbyte in Background
+          ./airbyte/run-ab-platform.sh &
+          sleep 240
+
+      # https://stackoverflow.com/questions/72981949/github-actions-how-to-share-bash-aliases-across-steps
+      - name: Enable Alias sharing
+        run: |
+          rc=/tmp/rcfile
+          echo 'shopt -s expand_aliases' > $rc
+          echo 'alias octavia="docker run -i --rm -v \$(pwd):/home/octavia-project --network host --user root:root airbyte/octavia-cli:0.44.4"' >> $rc
+
       - name: Initialize octavia project
         run: |
+          source /tmp/rcfile
           mkdir octavia
           cd octavia
-          shopt -s expand_aliases 
-          alias octavia="docker run -i --rm -v \$(pwd):/home/octavia-project --network host --user root:root airbyte/octavia-cli:0.44.4"
-          ../airbyte/run-ab-platform.sh &
-          sleep 240
           octavia init
 
       - name: Test octavia
         run: |
+          source /tmp/rcfile
           octavia list connectors destinations | grep Azure
