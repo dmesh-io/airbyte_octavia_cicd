@@ -23,7 +23,7 @@ def get_connections_id(workspace_id):
 
     connections = r.post(get_connections_api_url, headers=headers, json={"workspaceId": workspace_id}).json()["connections"]
 
-    if len(connections > 1):
+    if len(connections) > 1:
         print("currently only the first connection is returned")
 
     connection_id = connections[0]['connectionId']
