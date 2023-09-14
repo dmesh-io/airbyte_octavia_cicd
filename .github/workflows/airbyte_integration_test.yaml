@@ -26,14 +26,13 @@ jobs:
         run: |
           bash ./octavia_installer.sh
           source /home/runner/.bashrc
-          tail /home/runner/.bashrc
 
       - name: Initialize octavia project
         run: |
           mkdir octavia
-          cd octavia
+          cd octavia          
+          alias octavia="docker run -i --rm -v \$(pwd):/home/octavia-project --network host --env-file \${OCTAVIA_ENV_FILE} --user \$(id -u):\$(id -g) airbyte/octavia-cli:'${VERSION}'"
           octavia init
-        shell: bash
 
       - name: Test octavia
         run: |
