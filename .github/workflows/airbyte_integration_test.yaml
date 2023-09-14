@@ -38,10 +38,10 @@ jobs:
         run: |
           source /tmp/rcfile
           mkdir octavia
-          cd octavia
-          octavia init
+          cd octavia && octavia init
 
-      - name: Test octavia
+      - name: Deploy octavia
         run: |
           source /tmp/rcfile
-          octavia list connectors destinations | grep Azure
+          ./copy_template_files.sh
+          cd octavia && octavia apply
