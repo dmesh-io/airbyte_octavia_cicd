@@ -12,14 +12,16 @@ string_list=("String1" "String2" "String3")
 
 for connection_type in "${airbyte_configuration_types[@]}"; do
     for source_file in "$source_dir"/"$connection_type"/*.yaml; do
+
         # Get the filename (without the path)
         filename=$(basename "$source_file")
+        filename_without_suffix="${filename%%.yaml}"
 
         # Create the destination directory (if it doesn't exist)
-        mkdir -p "$destination_dir/$connection_type/$filename"
+        mkdir -p "$destination_dir/$connection_type/$filename_without_suffix"
 
         # Copy the source file to the destination with the desired name
-        cp "$source_file" "$destination_dir/$connection_type/$filename/configuration.yaml"
+        cp "$source_file" "$destination_dir/$connection_type/$filename_without_suffix/configuration.yaml"
     done
 done
 
