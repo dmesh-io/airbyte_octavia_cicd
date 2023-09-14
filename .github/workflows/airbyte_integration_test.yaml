@@ -19,9 +19,6 @@ jobs:
 
       - name: Airbyte Startup in Background
         run: |
-          cd airbyte
-          ./run-ab-platform.sh &
-        shell: bash
 
       - name: Install Octavia cli
         run: |
@@ -34,6 +31,8 @@ jobs:
           cd octavia
           shopt -s expand_aliases 
           alias octavia="docker run -i --rm -v \$(pwd):/home/octavia-project --network host airbyte/octavia-cli:0.44.4"
+          ../airbyte/run-ab-platform.sh &
+          sleep 60
           octavia init
 
       - name: Test octavia
