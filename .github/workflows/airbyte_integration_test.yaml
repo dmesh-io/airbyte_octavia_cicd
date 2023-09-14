@@ -23,6 +23,7 @@ jobs:
           source /home/runner/.bashrc
 
       - name: Start Airbyte in Background
+        run: |
           ./airbyte/run-ab-platform.sh &
           sleep 240
 
