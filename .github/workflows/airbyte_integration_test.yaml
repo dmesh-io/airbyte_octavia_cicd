@@ -33,6 +33,7 @@ jobs:
           mkdir octavia
           cd octavia
           octavia init
+        shell: bash
 
       - name: Test octavia
         run: |
