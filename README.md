@@ -1,43 +1,56 @@
-prerequisite: installed airbyte
+# Airbyte CI/CD Deployment for Integration tests
 
-git clone https://github.com/airbytehq/airbyte.git
+## Local Deployment
 
-# switch into Airbyte directory
-cd airbyte
+start in repository root and clone the airbyte repo with:
 
-# start Airbyte
-./run-ab-platform.sh
+```bash
+git clone https://git.com/airbytehq/airbyte.git
+```
 
-source:
-https://medium.com/@jeremysrgt/airbyte-configuration-as-code-with-octavia-cli-dccd2046b764
+Start airbyte server. Let this run in background. You can access this airbyte instance in browser url `http://localhost:8000`. Default username is airbyte, password is password.
 
+```bash
+airbyte/run-ab-platform.sh
+```
 
-1. install octavia
-$ curl -s -o- https://raw.githubusercontent.com/airbytehq/airbyte/master/octavia-cli/install.sh | bash
+Next, install octavia with this statement:
 
-2. octavia init
+```bash
+curl -s -o- https://raw.githubusercontent.com/airbytehq/airbyte/master/octavia-cli/install.sh | bash
+```
 
+### Octavia workflow
+The yaml connectors in `airbyte_connection_templates` can now be deployed to the airbyte instance without accessing the UI. First initialize octavia for the airbyte instance:
 
+```bash
+mkdir octavia && cd octavia
+octavia init
+```
 
-workflow for creating templates:
+Octavia creates empty folders for sources, destinations and connections with additional metadata files. The yaml files need to be copied there now. Execute this:
 
-1. `octavia list connectors destinations | grep Azure`
-2. copy hash id
-3. `octavia generate destination <hash-id>` <destination name>
-(4. copy to connections folder for template version control)
+```bash
+./copy_template_files.sh
+```
 
+Now octavia can deploy the connector with:
+```bash
+cd octavia && octavia apply
+```
 
-what does the script have to do?
-source .env file
-install and start airbyte
-install and init octavia
-move all templates to folders
-octavia apply
+You can go to your airbyte UI and check if the adapters are visible. Note: you can substitute credentials with environment variables. Depending on the connection, these need to be set.
 
+## Usage in Github actions
 
-problems and questions: 
-- there is no orchestration of apply -> first sources and destinations then connections
-- how to trigger a sync once? anscheinend mit airflow möglich https://airflow.apache.org/docs/apache-airflow-providers-airbyte/stable/operators/airbyte.html
-auch als airbyte api call möglich https://reference.airbyte.com/reference/createjob
+Add all secrets you don't want to have in the repository as github secrets and reference them in the github actions yaml as env variable. For reference, look at line 55.
 
-https://reference.airbyte.com/reference/createdestination
+Each airbyte connection is defined by three connection type. First, configure a source and destination. Second, form a connection by connecting the source with the destination plus additional configuration.
+
+Octavia enables using yaml files for configuring these three connection types. Examples can be found in `airbyte_connection_templates`.
+
+## How to generate yaml templates for connector
+
+Octavia/Airbyte helps you with providing empty yaml files for each connector. You just have to fill in your application specific data like connection strings, environment variables linking to secrets, ...
+
+The process of generating these empty templates can be found [here](https://medium.com/@jeremysrgt/airbyte-configuration-as-code-with-octavia-cli-dccd2046b764). You can try deploying these in your local workspace. When working as desired, they can be checked into version control in the `airbyte_cnnection_templates` folder and will be considered by the ci/cd pipeline.
