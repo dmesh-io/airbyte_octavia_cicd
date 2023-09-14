@@ -24,7 +24,7 @@ jobs:
 
       - name: Install Octavia cli
         run: |
-          curl -s -o- https://raw.githubusercontent.com/airbytehq/airbyte/master/octavia-cli/install.sh | bash
+          ./octavia_installer.sh
 
       - name: Initialize octavia project
         run: |
