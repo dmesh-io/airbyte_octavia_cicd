@@ -24,7 +24,7 @@ jobs:
 
       - name: Install Octavia cli
         run: |
-          ./octavia_installer.sh
+          bash ./octavia_installer.sh
 
       - name: Initialize octavia project
         run: |
