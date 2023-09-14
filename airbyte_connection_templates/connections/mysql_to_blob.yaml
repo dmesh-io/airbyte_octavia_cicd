@@ -1,0 +1,3101 @@
+# Configuration for connection mysql_to_blob
+definition_type: connection
+resource_name: "mysql_to_blob"
+source_configuration_path: sources/mysqladapter/configuration.yaml
+destination_configuration_path: destinations/azureblobdestination/configuration.yaml
+
+# EDIT THE CONFIGURATION BELOW!
+configuration:
+  status: active # REQUIRED | string | Allowed values: active, inactive, deprecated
+  skip_reset: false # OPTIONAL | boolean | Flag to check if the connection should be reset after a connection update
+  namespace_definition: source # OPTIONAL | string | Allowed values: source, destination, customformat
+  namespace_format: "${SOURCE_NAMESPACE}" # OPTIONAL | string | Used when namespaceDefinition is 'customformat'. If blank then behaves like namespaceDefinition = 'destination'. If "${SOURCE_NAMESPACE}" then behaves like namespaceDefinition = 'source'.
+  prefix: "" # REQUIRED | Prefix that will be prepended to the name of each stream when it is written to the destination
+  resource_requirements: # OPTIONAL | object | Resource requirements to run workers (blank for unbounded allocations)
+    cpu_limit: "" # OPTIONAL
+    cpu_request: "" # OPTIONAL
+    memory_limit: "" # OPTIONAL
+    memory_request: "" # OPTIONAL
+  schedule_type: basic # OPTIONAL | string | Allowed values: basic, cron, manual
+  schedule_data: # OPTIONAL | object
+    basic_schedule:
+      time_unit: hours # REQUIRED | string | Allowed values: minutes, hours, days, weeks, months
+      units: 1 # REQUIRED | integer
+    # cron:
+    #   cron_time_zone: "UTC" # REQUIRED | string
+    #   cron_expression: "* */2 * * * ?" # REQUIRED | string
+  sync_catalog: # OPTIONAL | object | 🚨 ONLY edit streams.config, streams.stream should not be edited as schema cannot be changed.
+    streams:
+      - config:
+          alias_name: author
+          cursor_field:
+            - _ab_cdc_cursor
+          destination_sync_mode: append_dedup
+          primary_key:
+            - - author_id
+          selected: false
+          suggested: false
+          sync_mode: incremental
+        stream:
+          default_cursor_field:
+            - _ab_cdc_cursor
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              author_id:
+                airbyte_type: integer
+                type: number
+              initials:
+                type: string
+              last_name:
+                type: string
+              name:
+                type: string
+              orcid:
+                type: string
+              synonyms:
+                type: string
+            type: object
+          name: author
+          namespace: Rfam
+          source_defined_cursor: true
+          source_defined_primary_key:
+            - - author_id
+          supported_sync_modes:
+            - full_refresh
+            - incremental
+      - config:
+          alias_name: pseudoknot
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              covariation:
+                airbyte_type: integer
+                type: number
+              pseudoknot_id:
+                type: string
+              rfam_acc:
+                type: string
+              source:
+                type: string
+            type: object
+          name: pseudoknot
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: dead_family
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              comment:
+                type: string
+              forward_to:
+                type: string
+              rfam_acc:
+                type: string
+              rfam_id:
+                type: string
+              title:
+                type: string
+              user:
+                type: string
+            type: object
+          name: dead_family
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: genseq_temp
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              chromosome_name:
+                type: string
+              chromosome_type:
+                type: string
+              rfamseq_acc:
+                type: string
+              upid:
+                type: string
+              version:
+                type: string
+            type: object
+          name: genseq_temp
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: pdb_rfam_reg
+          cursor_field:
+            - _ab_cdc_cursor
+          destination_sync_mode: append_dedup
+          primary_key:
+            - - auto_pdb_reg
+          selected: false
+          suggested: false
+          sync_mode: incremental
+        stream:
+          default_cursor_field:
+            - _ab_cdc_cursor
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              auto_pdb_reg:
+                airbyte_type: integer
+                type: number
+              chain:
+                type: string
+              hex_colour:
+                type: string
+              pdb_id:
+                type: string
+              pdb_res_end:
+                airbyte_type: integer
+                type: number
+              pdb_res_start:
+                airbyte_type: integer
+                type: number
+              pdb_seq:
+                type: string
+              rfam_acc:
+                type: string
+              rfamseq_acc:
+                type: string
+              seq_end:
+                airbyte_type: integer
+                type: number
+              seq_start:
+                airbyte_type: integer
+                type: number
+            type: object
+          name: pdb_rfam_reg
+          namespace: Rfam
+          source_defined_cursor: true
+          source_defined_primary_key:
+            - - auto_pdb_reg
+          supported_sync_modes:
+            - full_refresh
+            - incremental
+      - config:
+          alias_name: motif_matches
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              bit_score:
+                type: number
+              e_value:
+                type: string
+              motif_acc:
+                type: string
+              motif_start:
+                airbyte_type: integer
+                type: number
+              motif_stop:
+                airbyte_type: integer
+                type: number
+              query_start:
+                airbyte_type: integer
+                type: number
+              query_stop:
+                airbyte_type: integer
+                type: number
+              rfam_acc:
+                type: string
+              rfamseq_acc:
+                type: string
+              rfamseq_start:
+                airbyte_type: integer
+                type: number
+              rfamseq_stop:
+                airbyte_type: integer
+                type: number
+            type: object
+          name: motif_matches
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: version
+          cursor_field:
+            - _ab_cdc_cursor
+          destination_sync_mode: append_dedup
+          primary_key:
+            - - rfam_release
+          selected: false
+          suggested: false
+          sync_mode: incremental
+        stream:
+          default_cursor_field:
+            - _ab_cdc_cursor
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              embl_release:
+                type: string
+              number_families:
+                airbyte_type: integer
+                type: number
+              rfam_release:
+                type: number
+              rfam_release_date:
+                format: date
+                type: string
+            type: object
+          name: version
+          namespace: Rfam
+          source_defined_cursor: true
+          source_defined_primary_key:
+            - - rfam_release
+          supported_sync_modes:
+            - full_refresh
+            - incremental
+      - config:
+          alias_name: refseq
+          cursor_field:
+            - _ab_cdc_cursor
+          destination_sync_mode: append_dedup
+          primary_key:
+            - - refseq_acc
+          selected: false
+          suggested: false
+          sync_mode: incremental
+        stream:
+          default_cursor_field:
+            - _ab_cdc_cursor
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              description:
+                type: string
+              ncbi_taxid:
+                airbyte_type: integer
+                type: number
+              refseq_acc:
+                type: string
+              species:
+                type: string
+            type: object
+          name: refseq
+          namespace: Rfam
+          source_defined_cursor: true
+          source_defined_primary_key:
+            - - refseq_acc
+          supported_sync_modes:
+            - full_refresh
+            - incremental
+      - config:
+          alias_name: family_author
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              author_id:
+                airbyte_type: integer
+                type: number
+              desc_order:
+                airbyte_type: integer
+                type: number
+              rfam_acc:
+                type: string
+            type: object
+          name: family_author
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: clan_literature_reference
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              clan_acc:
+                type: string
+              comment:
+                type: string
+              order_added:
+                airbyte_type: integer
+                type: number
+              pmid:
+                airbyte_type: integer
+                type: number
+            type: object
+          name: clan_literature_reference
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: pdb_full_region
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              bit_score:
+                type: number
+              chain:
+                type: string
+              cm_end:
+                airbyte_type: integer
+                type: number
+              cm_start:
+                airbyte_type: integer
+                type: number
+              evalue_score:
+                type: string
+              hex_colour:
+                type: string
+              is_significant:
+                type: boolean
+              pdb_end:
+                airbyte_type: integer
+                type: number
+              pdb_id:
+                type: string
+              pdb_start:
+                airbyte_type: integer
+                type: number
+              rfam_acc:
+                type: string
+            type: object
+          name: pdb_full_region
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: family_literature_reference
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              comment:
+                type: string
+              order_added:
+                airbyte_type: integer
+                type: number
+              pmid:
+                airbyte_type: integer
+                type: number
+              rfam_acc:
+                type: string
+            type: object
+          name: family_literature_reference
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: ensembl_names
+          cursor_field:
+            - _ab_cdc_cursor
+          destination_sync_mode: append_dedup
+          primary_key:
+            - - insdc
+          selected: false
+          suggested: false
+          sync_mode: incremental
+        stream:
+          default_cursor_field:
+            - _ab_cdc_cursor
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              ensembl:
+                type: string
+              insdc:
+                type: string
+            type: object
+          name: ensembl_names
+          namespace: Rfam
+          source_defined_cursor: true
+          source_defined_primary_key:
+            - - insdc
+          supported_sync_modes:
+            - full_refresh
+            - incremental
+      - config:
+          alias_name: _post_process
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              author:
+                type: string
+              closed:
+                airbyte_type: timestamp_without_timezone
+                format: date-time
+                type: string
+              created:
+                airbyte_type: timestamp_without_timezone
+                format: date-time
+                type: string
+              lsf_id:
+                airbyte_type: integer
+                type: number
+              message:
+                type: string
+              opened:
+                airbyte_type: timestamp_without_timezone
+                format: date-time
+                type: string
+              rfam_acc:
+                type: string
+              status:
+                type: string
+              uuid:
+                type: string
+            type: object
+          name: _post_process
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: clan_membership
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              clan_acc:
+                type: string
+              rfam_acc:
+                type: string
+            type: object
+          name: clan_membership
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: rnacentral_matches
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              md5:
+                type: string
+              rfamseq_acc:
+                type: string
+              rnacentral_id:
+                type: string
+              seq_end:
+                airbyte_type: integer
+                type: number
+              seq_start:
+                airbyte_type: integer
+                type: number
+              type:
+                type: string
+            type: object
+          name: rnacentral_matches
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: taxonomic_tree
+          cursor_field:
+            - _ab_cdc_cursor
+          destination_sync_mode: append_dedup
+          primary_key:
+            - - ncbi_code
+          selected: false
+          suggested: false
+          sync_mode: incremental
+        stream:
+          default_cursor_field:
+            - _ab_cdc_cursor
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              level:
+                type: string
+              lft:
+                airbyte_type: integer
+                type: number
+              ncbi_code:
+                airbyte_type: integer
+                type: number
+              parent:
+                type: string
+              rgt:
+                airbyte_type: integer
+                type: number
+              species:
+                type: string
+              taxonomy:
+                type: string
+            type: object
+          name: taxonomic_tree
+          namespace: Rfam
+          source_defined_cursor: true
+          source_defined_primary_key:
+            - - ncbi_code
+          supported_sync_modes:
+            - full_refresh
+            - incremental
+      - config:
+          alias_name: keywords
+          cursor_field:
+            - _ab_cdc_cursor
+          destination_sync_mode: append_dedup
+          primary_key:
+            - - rfam_acc
+          selected: false
+          suggested: false
+          sync_mode: incremental
+        stream:
+          default_cursor_field:
+            - _ab_cdc_cursor
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              clan_info:
+                type: string
+              description:
+                type: string
+              literature:
+                type: string
+              pdb_mappings:
+                type: string
+              rfam_acc:
+                type: string
+              rfam_general:
+                type: string
+              rfam_id:
+                type: string
+              wiki:
+                type: string
+            type: object
+          name: keywords
+          namespace: Rfam
+          source_defined_cursor: true
+          source_defined_primary_key:
+            - - rfam_acc
+          supported_sync_modes:
+            - full_refresh
+            - incremental
+      - config:
+          alias_name: motif_family_stats
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              avg_weight_bits:
+                type: number
+              frac_hits:
+                type: number
+              motif_acc:
+                type: string
+              num_hits:
+                airbyte_type: integer
+                type: number
+              rfam_acc:
+                type: string
+              sum_bits:
+                type: number
+            type: object
+          name: motif_family_stats
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: _annotated_file
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              cm:
+                contentEncoding: base64
+                type: string
+              full:
+                contentEncoding: base64
+                type: string
+              rfam_acc:
+                type: string
+              seed:
+                contentEncoding: base64
+                type: string
+            type: object
+          name: _annotated_file
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: matches_and_fasta
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              fasta:
+                contentEncoding: base64
+                type: string
+              match_list:
+                contentEncoding: base64
+                type: string
+              rfam_acc:
+                type: string
+              type:
+                type: string
+            type: object
+          name: matches_and_fasta
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: clan_database_link
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              clan_acc:
+                type: string
+              comment:
+                type: string
+              db_id:
+                type: string
+              db_link:
+                type: string
+              other_params:
+                type: string
+            type: object
+          name: clan_database_link
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: family_long
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              reference_sequence:
+                type: string
+              referenece_structure:
+                type: string
+              rfam_acc:
+                type: string
+            type: object
+          name: family_long
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: dead_clan
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              clan_acc:
+                type: string
+              clan_id:
+                type: string
+              comment:
+                type: string
+              forward_to:
+                type: string
+              user:
+                type: string
+            type: object
+          name: dead_clan
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: _genome_data
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              author:
+                type: string
+              closed:
+                airbyte_type: timestamp_without_timezone
+                format: date-time
+                type: string
+              created:
+                airbyte_type: timestamp_without_timezone
+                format: date-time
+                type: string
+              data_file:
+                type: string
+              lsf_id:
+                airbyte_type: integer
+                type: number
+              message:
+                type: string
+              opened:
+                airbyte_type: timestamp_without_timezone
+                format: date-time
+                type: string
+              status:
+                type: string
+              uuid:
+                type: string
+            type: object
+          name: _genome_data
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: taxonomy
+          cursor_field:
+            - _ab_cdc_cursor
+          destination_sync_mode: append_dedup
+          primary_key:
+            - - ncbi_id
+          selected: false
+          suggested: false
+          sync_mode: incremental
+        stream:
+          default_cursor_field:
+            - _ab_cdc_cursor
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              align_display_name:
+                type: string
+              ncbi_id:
+                airbyte_type: integer
+                type: number
+              species:
+                type: string
+              tax_string:
+                type: string
+              tree_display_name:
+                type: string
+            type: object
+          name: taxonomy
+          namespace: Rfam
+          source_defined_cursor: true
+          source_defined_primary_key:
+            - - ncbi_id
+          supported_sync_modes:
+            - full_refresh
+            - incremental
+      - config:
+          alias_name: _overlap
+          cursor_field:
+            - _ab_cdc_cursor
+          destination_sync_mode: append_dedup
+          primary_key:
+            - - auto_overlap
+          selected: false
+          suggested: false
+          sync_mode: incremental
+        stream:
+          default_cursor_field:
+            - _ab_cdc_cursor
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              author:
+                type: string
+              auto_overlap:
+                airbyte_type: integer
+                type: number
+              comment:
+                type: string
+              description:
+                type: string
+              id:
+                type: string
+            type: object
+          name: _overlap
+          namespace: Rfam
+          source_defined_cursor: true
+          source_defined_primary_key:
+            - - auto_overlap
+          supported_sync_modes:
+            - full_refresh
+            - incremental
+      - config:
+          alias_name: genseq
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              chromosome_name:
+                type: string
+              chromosome_type:
+                type: string
+              rfamseq_acc:
+                type: string
+              upid:
+                type: string
+              version:
+                type: string
+            type: object
+          name: genseq
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: database_link
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              comment:
+                type: string
+              db_id:
+                type: string
+              db_link:
+                type: string
+              other_params:
+                type: string
+              rfam_acc:
+                type: string
+            type: object
+          name: database_link
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: motif_ss_image
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              image:
+                contentEncoding: base64
+                type: string
+              motif_acc:
+                type: string
+              rfam_acc:
+                type: string
+            type: object
+          name: motif_ss_image
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: features
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              database_id:
+                type: string
+              feat_end:
+                airbyte_type: integer
+                type: number
+              feat_orient:
+                airbyte_type: integer
+                type: number
+              feat_start:
+                airbyte_type: integer
+                type: number
+              primary_id:
+                type: string
+              quaternary_id:
+                type: string
+              rfamseq_acc:
+                type: string
+              secondary_id:
+                type: string
+            type: object
+          name: features
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: alignment_and_tree
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              alignment:
+                contentEncoding: base64
+                type: string
+              average_length:
+                type: number
+              number_of_sequences:
+                airbyte_type: integer
+                type: number
+              percent_id:
+                type: number
+              rfam_acc:
+                type: string
+              tree:
+                contentEncoding: base64
+                type: string
+              treemethod:
+                type: string
+              type:
+                type: string
+            type: object
+          name: alignment_and_tree
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: motif
+          cursor_field:
+            - _ab_cdc_cursor
+          destination_sync_mode: append_dedup
+          primary_key:
+            - - motif_acc
+          selected: false
+          suggested: false
+          sync_mode: incremental
+        stream:
+          default_cursor_field:
+            - _ab_cdc_cursor
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              author:
+                type: string
+              average_id:
+                type: number
+              average_sqlen:
+                type: number
+              clen:
+                airbyte_type: integer
+                type: number
+              cmbuild:
+                type: string
+              cmcalibrate:
+                type: string
+              created:
+                airbyte_type: timestamp_without_timezone
+                format: date-time
+                type: string
+              description:
+                type: string
+              ecmli_cal_db:
+                airbyte_type: integer
+                type: number
+              ecmli_cal_hits:
+                airbyte_type: integer
+                type: number
+              ecmli_lambda:
+                type: number
+              ecmli_mu:
+                type: number
+              gathering_cutoff:
+                type: number
+              hmm_lambda:
+                type: number
+              hmm_tau:
+                type: number
+              match_pair_node:
+                type: boolean
+              maxl:
+                airbyte_type: integer
+                type: number
+              motif_acc:
+                type: string
+              motif_id:
+                type: string
+              noise_cutoff:
+                type: number
+              num_seed:
+                airbyte_type: integer
+                type: number
+              seed_source:
+                type: string
+              trusted_cutoff:
+                type: number
+              type:
+                type: string
+              updated:
+                airbyte_type: timestamp_with_timezone
+                format: date-time
+                type: string
+              wiki:
+                type: string
+            type: object
+          name: motif
+          namespace: Rfam
+          source_defined_cursor: true
+          source_defined_primary_key:
+            - - motif_acc
+          supported_sync_modes:
+            - full_refresh
+            - incremental
+      - config:
+          alias_name: motif_old
+          cursor_field:
+            - _ab_cdc_cursor
+          destination_sync_mode: append_dedup
+          primary_key:
+            - - motif_acc
+          selected: false
+          suggested: false
+          sync_mode: incremental
+        stream:
+          default_cursor_field:
+            - _ab_cdc_cursor
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              author:
+                type: string
+              clen:
+                airbyte_type: integer
+                type: number
+              cmbuild:
+                type: string
+              cmcalibrate:
+                type: string
+              created:
+                airbyte_type: timestamp_without_timezone
+                format: date-time
+                type: string
+              description:
+                type: string
+              ecmli_cal_db:
+                airbyte_type: integer
+                type: number
+              ecmli_cal_hits:
+                airbyte_type: integer
+                type: number
+              ecmli_lambda:
+                type: number
+              ecmli_mu:
+                type: number
+              gathering_cutoff:
+                type: number
+              hmm_lambda:
+                type: number
+              hmm_tau:
+                type: number
+              match_pair_node:
+                type: boolean
+              maxl:
+                airbyte_type: integer
+                type: number
+              motif_acc:
+                type: string
+              motif_id:
+                type: string
+              noise_cutoff:
+                type: number
+              seed_source:
+                type: string
+              trusted_cutoff:
+                type: number
+              type:
+                type: string
+              updated:
+                airbyte_type: timestamp_with_timezone
+                format: date-time
+                type: string
+            type: object
+          name: motif_old
+          namespace: Rfam
+          source_defined_cursor: true
+          source_defined_primary_key:
+            - - motif_acc
+          supported_sync_modes:
+            - full_refresh
+            - incremental
+      - config:
+          alias_name: _overlap_membership
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              auto_overlap:
+                airbyte_type: integer
+                type: number
+              rfam_acc:
+                type: string
+            type: object
+          name: _overlap_membership
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: rfamseq_temp
+          cursor_field:
+            - _ab_cdc_cursor
+          destination_sync_mode: append_dedup
+          primary_key:
+            - - rfamseq_acc
+          selected: false
+          suggested: false
+          sync_mode: incremental
+        stream:
+          default_cursor_field:
+            - _ab_cdc_cursor
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              accession:
+                type: string
+              description:
+                type: string
+              length:
+                airbyte_type: integer
+                type: number
+              mol_type:
+                type: string
+              ncbi_id:
+                airbyte_type: integer
+                type: number
+              previous_acc:
+                type: string
+              rfamseq_acc:
+                type: string
+              source:
+                type: string
+              version:
+                airbyte_type: integer
+                type: number
+            type: object
+          name: rfamseq_temp
+          namespace: Rfam
+          source_defined_cursor: true
+          source_defined_primary_key:
+            - - rfamseq_acc
+          supported_sync_modes:
+            - full_refresh
+            - incremental
+      - config:
+          alias_name: _lock
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              allowCommits:
+                type: boolean
+              alsoAllow:
+                type: string
+              locked:
+                type: boolean
+              locker:
+                type: string
+            type: object
+          name: _lock
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: sunburst
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              data:
+                contentEncoding: base64
+                type: string
+              rfam_acc:
+                type: string
+              type:
+                type: string
+            type: object
+          name: sunburst
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: refseq_full_region
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              bit_score:
+                type: number
+              cm_end:
+                airbyte_type: integer
+                type: number
+              cm_start:
+                airbyte_type: integer
+                type: number
+              evalue_score:
+                type: string
+              refseq_acc:
+                type: string
+              rfam_acc:
+                type: string
+              seq_end:
+                airbyte_type: integer
+                type: number
+              seq_start:
+                airbyte_type: integer
+                type: number
+              truncated:
+                type: string
+            type: object
+          name: refseq_full_region
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: secondary_structure_image
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              image:
+                contentEncoding: base64
+                type: string
+              rfam_acc:
+                type: string
+              type:
+                type: string
+            type: object
+          name: secondary_structure_image
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: processed_data
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              cm:
+                contentEncoding: base64
+                type: string
+              genome_full:
+                type: string
+              genome_full_md5:
+                type: string
+              refseq_full:
+                type: string
+              refseq_full_md5:
+                type: string
+              rfam_acc:
+                type: string
+              scores_graph:
+                contentEncoding: base64
+                type: string
+              ss_stats_fam:
+                contentEncoding: base64
+                type: string
+              ss_stats_pbp:
+                contentEncoding: base64
+                type: string
+              ss_stats_seq:
+                contentEncoding: base64
+                type: string
+            type: object
+          name: processed_data
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: seed_region
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              md5:
+                type: string
+              rfam_acc:
+                type: string
+              rfamseq_acc:
+                type: string
+              seq_end:
+                airbyte_type: integer
+                type: number
+              seq_start:
+                airbyte_type: integer
+                type: number
+            type: object
+          name: seed_region
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: rfamseq
+          cursor_field:
+            - _ab_cdc_cursor
+          destination_sync_mode: append_dedup
+          primary_key:
+            - - rfamseq_acc
+          selected: false
+          suggested: false
+          sync_mode: incremental
+        stream:
+          default_cursor_field:
+            - _ab_cdc_cursor
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              accession:
+                type: string
+              description:
+                type: string
+              length:
+                airbyte_type: integer
+                type: number
+              mol_type:
+                type: string
+              ncbi_id:
+                airbyte_type: integer
+                type: number
+              previous_acc:
+                type: string
+              rfamseq_acc:
+                type: string
+              source:
+                type: string
+              version:
+                airbyte_type: integer
+                type: number
+            type: object
+          name: rfamseq
+          namespace: Rfam
+          source_defined_cursor: true
+          source_defined_primary_key:
+            - - rfamseq_acc
+          supported_sync_modes:
+            - full_refresh
+            - incremental
+      - config:
+          alias_name: full_region
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              bit_score:
+                type: number
+              cm_end:
+                airbyte_type: integer
+                type: number
+              cm_start:
+                airbyte_type: integer
+                type: number
+              evalue_score:
+                type: string
+              is_significant:
+                airbyte_type: integer
+                type: number
+              rfam_acc:
+                type: string
+              rfamseq_acc:
+                type: string
+              seq_end:
+                airbyte_type: integer
+                type: number
+              seq_start:
+                airbyte_type: integer
+                type: number
+              truncated:
+                type: string
+              type:
+                type: string
+            type: object
+          name: full_region
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: literature_reference
+          cursor_field:
+            - _ab_cdc_cursor
+          destination_sync_mode: append_dedup
+          primary_key:
+            - - pmid
+          selected: false
+          suggested: false
+          sync_mode: incremental
+        stream:
+          default_cursor_field:
+            - _ab_cdc_cursor
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              author:
+                type: string
+              journal:
+                type: string
+              pmid:
+                airbyte_type: integer
+                type: number
+              title:
+                type: string
+            type: object
+          name: literature_reference
+          namespace: Rfam
+          source_defined_cursor: true
+          source_defined_primary_key:
+            - - pmid
+          supported_sync_modes:
+            - full_refresh
+            - incremental
+      - config:
+          alias_name: pdb
+          cursor_field:
+            - _ab_cdc_cursor
+          destination_sync_mode: append_dedup
+          primary_key:
+            - - pdb_id
+          selected: false
+          suggested: false
+          sync_mode: incremental
+        stream:
+          default_cursor_field:
+            - _ab_cdc_cursor
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              author:
+                type: string
+              date:
+                type: string
+              keywords:
+                type: string
+              method:
+                type: string
+              pdb_id:
+                type: string
+              resolution:
+                type: number
+              title:
+                type: string
+            type: object
+          name: pdb
+          namespace: Rfam
+          source_defined_cursor: true
+          source_defined_primary_key:
+            - - pdb_id
+          supported_sync_modes:
+            - full_refresh
+            - incremental
+      - config:
+          alias_name: motif_file
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              cm:
+                contentEncoding: base64
+                type: string
+              motif_acc:
+                type: string
+              seed:
+                contentEncoding: base64
+                type: string
+            type: object
+          name: motif_file
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: html_alignment
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              block:
+                airbyte_type: integer
+                type: number
+              html:
+                contentEncoding: base64
+                type: string
+              html_alignmentscol:
+                type: string
+              rfam_acc:
+                type: string
+              type:
+                type: string
+            type: object
+          name: html_alignment
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: wikitext
+          cursor_field:
+            - _ab_cdc_cursor
+          destination_sync_mode: append_dedup
+          primary_key:
+            - - auto_wiki
+          selected: false
+          suggested: false
+          sync_mode: incremental
+        stream:
+          default_cursor_field:
+            - _ab_cdc_cursor
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              auto_wiki:
+                airbyte_type: integer
+                type: number
+              title:
+                type: string
+            type: object
+          name: wikitext
+          namespace: Rfam
+          source_defined_cursor: true
+          source_defined_primary_key:
+            - - auto_wiki
+          supported_sync_modes:
+            - full_refresh
+            - incremental
+      - config:
+          alias_name: pdb_sequence
+          cursor_field:
+            - _ab_cdc_cursor
+          destination_sync_mode: append_dedup
+          primary_key:
+            - - pdb_seq
+          selected: false
+          suggested: false
+          sync_mode: incremental
+        stream:
+          default_cursor_field:
+            - _ab_cdc_cursor
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              chain:
+                type: string
+              pdb_id:
+                type: string
+              pdb_seq:
+                type: string
+            type: object
+          name: pdb_sequence
+          namespace: Rfam
+          source_defined_cursor: true
+          source_defined_primary_key:
+            - - pdb_seq
+          supported_sync_modes:
+            - full_refresh
+            - incremental
+      - config:
+          alias_name: db_version
+          cursor_field:
+            - _ab_cdc_cursor
+          destination_sync_mode: append_dedup
+          primary_key:
+            - - rfam_release
+          selected: false
+          suggested: false
+          sync_mode: incremental
+        stream:
+          default_cursor_field:
+            - _ab_cdc_cursor
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              embl_release:
+                type: string
+              genome_collection_date:
+                airbyte_type: timestamp_without_timezone
+                format: date-time
+                type: string
+              infernal_version:
+                type: string
+              number_families:
+                airbyte_type: integer
+                type: number
+              pdb_date:
+                airbyte_type: timestamp_without_timezone
+                format: date-time
+                type: string
+              refseq_version:
+                airbyte_type: integer
+                type: number
+              rfam_release:
+                type: number
+              rfam_release_date:
+                airbyte_type: timestamp_without_timezone
+                format: date-time
+                type: string
+            type: object
+          name: db_version
+          namespace: Rfam
+          source_defined_cursor: true
+          source_defined_primary_key:
+            - - rfam_release
+          supported_sync_modes:
+            - full_refresh
+            - incremental
+      - config:
+          alias_name: genome
+          cursor_field:
+            - _ab_cdc_cursor
+          destination_sync_mode: append_dedup
+          primary_key:
+            - - upid
+          selected: false
+          suggested: false
+          sync_mode: incremental
+        stream:
+          default_cursor_field:
+            - _ab_cdc_cursor
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              assembly_acc:
+                type: string
+              assembly_level:
+                type: string
+              assembly_name:
+                type: string
+              assembly_version:
+                airbyte_type: integer
+                type: number
+              circular:
+                airbyte_type: integer
+                type: number
+              common_name:
+                type: string
+              created:
+                airbyte_type: timestamp_without_timezone
+                format: date-time
+                type: string
+              description:
+                type: string
+              is_reference:
+                type: boolean
+              is_representative:
+                type: boolean
+              kingdom:
+                type: string
+              ncbi_id:
+                airbyte_type: integer
+                type: number
+              num_families:
+                airbyte_type: integer
+                type: number
+              num_rfam_regions:
+                airbyte_type: integer
+                type: number
+              scientific_name:
+                type: string
+              study_ref:
+                type: string
+              total_length:
+                airbyte_type: integer
+                type: number
+              ungapped_length:
+                airbyte_type: integer
+                type: number
+              updated:
+                airbyte_type: timestamp_with_timezone
+                format: date-time
+                type: string
+              upid:
+                type: string
+              wgs_acc:
+                type: string
+              wgs_version:
+                airbyte_type: integer
+                type: number
+            type: object
+          name: genome
+          namespace: Rfam
+          source_defined_cursor: true
+          source_defined_primary_key:
+            - - upid
+          supported_sync_modes:
+            - full_refresh
+            - incremental
+      - config:
+          alias_name: family
+          cursor_field:
+            - _ab_cdc_cursor
+          destination_sync_mode: append_dedup
+          primary_key:
+            - - rfam_acc
+          selected: false
+          suggested: false
+          sync_mode: incremental
+        stream:
+          default_cursor_field:
+            - _ab_cdc_cursor
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              author:
+                type: string
+              auto_wiki:
+                airbyte_type: integer
+                type: number
+              clen:
+                airbyte_type: integer
+                type: number
+              cmbuild:
+                type: string
+              cmcalibrate:
+                type: string
+              cmsearch:
+                type: string
+              comment:
+                type: string
+              created:
+                airbyte_type: timestamp_without_timezone
+                format: date-time
+                type: string
+              description:
+                type: string
+              ecmli_cal_db:
+                airbyte_type: integer
+                type: number
+              ecmli_cal_hits:
+                airbyte_type: integer
+                type: number
+              ecmli_lambda:
+                type: number
+              ecmli_mu:
+                type: number
+              gathering_cutoff:
+                type: number
+              hmm_lambda:
+                type: number
+              hmm_tau:
+                type: number
+              match_pair_node:
+                type: boolean
+              maxl:
+                airbyte_type: integer
+                type: number
+              noise_cutoff:
+                type: number
+              num_full:
+                airbyte_type: integer
+                type: number
+              num_genome_seq:
+                airbyte_type: integer
+                type: number
+              num_pseudonokts:
+                airbyte_type: integer
+                type: number
+              num_refseq:
+                airbyte_type: integer
+                type: number
+              num_seed:
+                airbyte_type: integer
+                type: number
+              number_3d_structures:
+                airbyte_type: integer
+                type: number
+              number_of_species:
+                airbyte_type: integer
+                type: number
+              previous_id:
+                type: string
+              rfam_acc:
+                type: string
+              rfam_id:
+                type: string
+              seed_source:
+                type: string
+              structure_source:
+                type: string
+              tax_seed:
+                type: string
+              trusted_cutoff:
+                type: number
+              type:
+                type: string
+              updated:
+                airbyte_type: timestamp_with_timezone
+                format: date-time
+                type: string
+            type: object
+          name: family
+          namespace: Rfam
+          source_defined_cursor: true
+          source_defined_primary_key:
+            - - rfam_acc
+          supported_sync_modes:
+            - full_refresh
+            - incremental
+      - config:
+          alias_name: clan
+          cursor_field:
+            - _ab_cdc_cursor
+          destination_sync_mode: append_dedup
+          primary_key:
+            - - clan_acc
+          selected: false
+          suggested: false
+          sync_mode: incremental
+        stream:
+          default_cursor_field:
+            - _ab_cdc_cursor
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              author:
+                type: string
+              clan_acc:
+                type: string
+              comment:
+                type: string
+              created:
+                airbyte_type: timestamp_without_timezone
+                format: date-time
+                type: string
+              description:
+                type: string
+              id:
+                type: string
+              previous_id:
+                type: string
+              updated:
+                airbyte_type: timestamp_with_timezone
+                format: date-time
+                type: string
+            type: object
+          name: clan
+          namespace: Rfam
+          source_defined_cursor: true
+          source_defined_primary_key:
+            - - clan_acc
+          supported_sync_modes:
+            - full_refresh
+            - incremental
+      - config:
+          alias_name: genome_temp
+          cursor_field:
+            - _ab_cdc_cursor
+          destination_sync_mode: append_dedup
+          primary_key:
+            - - upid
+          selected: false
+          suggested: false
+          sync_mode: incremental
+        stream:
+          default_cursor_field:
+            - _ab_cdc_cursor
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              assembly_acc:
+                type: string
+              assembly_level:
+                type: string
+              assembly_name:
+                type: string
+              assembly_version:
+                airbyte_type: integer
+                type: number
+              circular:
+                airbyte_type: integer
+                type: number
+              common_name:
+                type: string
+              created:
+                airbyte_type: timestamp_without_timezone
+                format: date-time
+                type: string
+              description:
+                type: string
+              is_reference:
+                type: boolean
+              is_representative:
+                type: boolean
+              kingdom:
+                type: string
+              ncbi_id:
+                airbyte_type: integer
+                type: number
+              num_families:
+                airbyte_type: integer
+                type: number
+              num_rfam_regions:
+                airbyte_type: integer
+                type: number
+              scientific_name:
+                type: string
+              study_ref:
+                type: string
+              total_length:
+                airbyte_type: integer
+                type: number
+              ungapped_length:
+                airbyte_type: integer
+                type: number
+              updated:
+                airbyte_type: timestamp_with_timezone
+                format: date-time
+                type: string
+              upid:
+                type: string
+              wgs_acc:
+                type: string
+              wgs_version:
+                airbyte_type: integer
+                type: number
+            type: object
+          name: genome_temp
+          namespace: Rfam
+          source_defined_cursor: true
+          source_defined_primary_key:
+            - - upid
+          supported_sync_modes:
+            - full_refresh
+            - incremental
+      - config:
+          alias_name: motif_literature
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              comment:
+                type: string
+              motif_acc:
+                type: string
+              order_added:
+                airbyte_type: integer
+                type: number
+              pmid:
+                airbyte_type: integer
+                type: number
+            type: object
+          name: motif_literature
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: family_ncbi
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              ncbi_id:
+                airbyte_type: integer
+                type: number
+              rfam_acc:
+                type: string
+              rfam_id:
+                type: string
+            type: object
+          name: family_ncbi
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: pdb_full_region_old
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              bit_score:
+                type: number
+              chain:
+                type: string
+              cm_end:
+                airbyte_type: integer
+                type: number
+              cm_start:
+                airbyte_type: integer
+                type: number
+              evalue_score:
+                type: string
+              hex_colour:
+                type: string
+              is_significant:
+                type: boolean
+              pdb_end:
+                airbyte_type: integer
+                type: number
+              pdb_id:
+                type: string
+              pdb_start:
+                airbyte_type: integer
+                type: number
+              rfam_acc:
+                type: string
+            type: object
+          name: pdb_full_region_old
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: motif_database_link
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              comment:
+                type: string
+              db_id:
+                type: string
+              db_link:
+                type: string
+              motif_acc:
+                type: string
+              other_params:
+                type: string
+            type: object
+          name: motif_database_link
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: motif_pdb
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              chain:
+                type: string
+              motif_acc:
+                type: string
+              pdb_end:
+                airbyte_type: integer
+                type: number
+              pdb_id:
+                type: string
+              pdb_start:
+                airbyte_type: integer
+                type: number
+            type: object
+          name: motif_pdb
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: rscape_annotations
+          cursor_field:
+            - _ab_cdc_cursor
+          destination_sync_mode: append_dedup
+          primary_key:
+            - - rfam_acc
+          selected: false
+          suggested: false
+          sync_mode: incremental
+        stream:
+          default_cursor_field:
+            - _ab_cdc_cursor
+          json_schema:
+            properties:
+              F:
+                type: number
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              alen:
+                airbyte_type: integer
+                type: number
+              avgid:
+                type: number
+              found:
+                airbyte_type: integer
+                type: number
+              nseq:
+                airbyte_type: integer
+                type: number
+              ppv:
+                type: number
+              rfam_acc:
+                type: string
+              sensitivity:
+                type: number
+              tp:
+                airbyte_type: integer
+                type: number
+              'true':
+                airbyte_type: integer
+                type: number
+            type: object
+          name: rscape_annotations
+          namespace: Rfam
+          source_defined_cursor: true
+          source_defined_primary_key:
+            - - rfam_acc
+          supported_sync_modes:
+            - full_refresh
+            - incremental
+      - config:
+          alias_name: _family_file
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              cm:
+                contentEncoding: base64
+                type: string
+              rfam_acc:
+                type: string
+              seed:
+                contentEncoding: base64
+                type: string
+            type: object
+          name: _family_file
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh
+      - config:
+          alias_name: taxonomy_websearch
+          cursor_field: []
+          destination_sync_mode: overwrite
+          primary_key: []
+          selected: false
+          suggested: false
+          sync_mode: full_refresh
+        stream:
+          default_cursor_field: []
+          json_schema:
+            properties:
+              _ab_cdc_cursor:
+                airbyte_type: integer
+                type: number
+              _ab_cdc_deleted_at:
+                type: string
+              _ab_cdc_log_file:
+                type: string
+              _ab_cdc_log_pos:
+                type: number
+              _ab_cdc_updated_at:
+                type: string
+              level:
+                type: string
+              lft:
+                airbyte_type: integer
+                type: number
+              minimal:
+                type: boolean
+              ncbi_id:
+                airbyte_type: integer
+                type: number
+              parent:
+                airbyte_type: integer
+                type: number
+              rank:
+                type: string
+              rgt:
+                airbyte_type: integer
+                type: number
+              species:
+                type: string
+              taxonomy:
+                type: string
+            type: object
+          name: taxonomy_websearch
+          namespace: Rfam
+          source_defined_primary_key: []
+          supported_sync_modes:
+            - full_refresh

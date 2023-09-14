@@ -1,0 +1,20 @@
+resource_name: "AzureBlobDestination"
+definition_type: destination
+definition_id: b4c5d105-31fd-4817-96b6-cb923bfc04cb
+definition_image: airbyte/destination-azure-blob-storage
+definition_version: 0.2.0
+
+configuration:
+  format:
+    ## -------- Pick one valid structure among the examples below: --------
+    flattening: "No flattening" # REQUIRED | string | Whether the input json data should be normalized (flattened) in the output CSV. Please refer to docs for details.
+    format_type: "JSONL" # REQUIRED | string
+    ## -------- Another valid structure for format: --------
+    # format_type: "JSONL" # REQUIRED | string
+  azure_blob_storage_spill_size: 500 # OPTIONAL | integer | The amount of megabytes after which the connector should spill the records in a new blob object. Make sure to configure size greater than individual records. Enter 0 if not applicable | Example: 500
+  azure_blob_storage_account_key: # ${AZURE_BLOB_STORAGE_ACCOUNT_KEY} # SECRET (please store in environment variables) | REQUIRED | string | The Azure blob storage account key. | Example: Z8ZkZpteggFx394vm+PJHnGTvdRncaYS+JhLKdj789YNmD+iyGTnG+PV+POiuYNhBg/ACS+LKjd%4FG3FHGN12Nd==
+  azure_blob_storage_account_name: patrickoctaviadest # REQUIRED | string | The account's name of the Azure Blob Storage. | Example: airbyte5storage
+  azure_blob_storage_container_name: data # OPTIONAL | string | The name of the Azure blob storage container. If not exists - will be created automatically. May be empty, then will be created automatically airbytecontainer+timestamp | Example: airbytetescontainername
+  azure_blob_storage_output_buffer_size: 5 # OPTIONAL | integer | The amount of megabytes to buffer for the output stream to Azure. This will impact memory footprint on workers, but may need adjustment for performance and appropriate block size in Azure. | Example: 5
+  azure_blob_storage_endpoint_domain_name: "blob.core.windows.net" # OPTIONAL | string | This is Azure Blob Storage endpoint domain name. Leave default value (or leave it empty if run container from command line) to use Microsoft native from example. | Example: blob.core.windows.net
+initial
