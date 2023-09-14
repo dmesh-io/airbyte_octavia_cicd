@@ -1,8 +1,8 @@
 # Configuration for connection mysql_to_blob
 definition_type: connection
 resource_name: "mysql_to_blob"
-source_configuration_path: sources/mysqladapter/configuration.yaml
-destination_configuration_path: destinations/azureblobdestination/configuration.yaml
+source_configuration_path: sources/mysql_source/configuration.yaml
+destination_configuration_path: destinations/azure_blob_destination/configuration.yaml
 
 # EDIT THE CONFIGURATION BELOW!
 configuration:
