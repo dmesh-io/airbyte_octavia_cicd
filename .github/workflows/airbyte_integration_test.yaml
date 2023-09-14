@@ -13,6 +13,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.10
+
+      # install requirements
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
       - name: Airbyte Installation
         run: |
           git clone --depth=1 https://github.com/airbytehq/airbyte.git
@@ -47,3 +57,6 @@ jobs:
           source /tmp/rcfile
           sudo ./copy_template_files.sh
           cd octavia && octavia apply --force
+
+      - name: Trigger manual synchronization
+        run: python manually_trigger_sync.py
