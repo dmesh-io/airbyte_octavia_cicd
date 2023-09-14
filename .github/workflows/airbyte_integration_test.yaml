@@ -32,7 +32,7 @@ jobs:
           mkdir octavia
           cd octavia
           shopt -s expand_aliases          
-          alias octavia="docker run -i --rm -v \$(pwd):/home/octavia-project --network host --env-file \${OCTAVIA_ENV_FILE} --user \$(id -u):\$(id -g) airbyte/octavia-cli:'${VERSION}'"
+          alias octavia="docker run -i --rm -v \$(pwd):/home/octavia-project --network host --env-file \${OCTAVIA_ENV_FILE} airbyte/octavia-cli:'${VERSION}'"
           octavia init
 
       - name: Test octavia
