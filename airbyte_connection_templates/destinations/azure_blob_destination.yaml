@@ -17,4 +17,3 @@ configuration:
   azure_blob_storage_container_name: data # OPTIONAL | string | The name of the Azure blob storage container. If not exists - will be created automatically. May be empty, then will be created automatically airbytecontainer+timestamp | Example: airbytetescontainername
   azure_blob_storage_output_buffer_size: 5 # OPTIONAL | integer | The amount of megabytes to buffer for the output stream to Azure. This will impact memory footprint on workers, but may need adjustment for performance and appropriate block size in Azure. | Example: 5
   azure_blob_storage_endpoint_domain_name: "blob.core.windows.net" # OPTIONAL | string | This is Azure Blob Storage endpoint domain name. Leave default value (or leave it empty if run container from command line) to use Microsoft native from example. | Example: blob.core.windows.net
-initial
