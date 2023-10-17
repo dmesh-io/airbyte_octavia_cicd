@@ -41,6 +41,28 @@ cd octavia && octavia apply
 
 You can go to your airbyte UI and check if the adapters are visible. Note: you can substitute credentials with environment variables. Depending on the connection, these need to be set.
 
+### Secrets in Airbyte / Octavia
+
+Using secrets is a little bit tricky. As octavia command is just an alias for docker, you need to mount an env-var for all your secrets. I did it the following way:
+
+```bash
+set -o allexport; source .ovtavia.env; set +o allexport
+```
+
+with `.octavia.env` looking like this:
+```bash
+OCTAVIA_ENV_FILE=$(pwd)/.octavia.env
+SECRET1='foobazbar1123'
+SECRET2=...
+```
+
+The first line sets the environment file, that is mounted to the octavia docker to the file itself. Every environment variable afterwards can be used for storing environment variables. You can access these secret values now in the yaml templates, e.g.
+
+```yaml
+configuration:
+  secret: ${SECRET1}
+```
+
 ## Usage in Github actions
 
 Add all secrets you don't want to have in the repository as github secrets and reference them in the github actions yaml as env variable. For reference, look at line 55.
