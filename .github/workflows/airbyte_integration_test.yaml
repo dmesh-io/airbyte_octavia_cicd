@@ -51,7 +51,7 @@ jobs:
 
       - name: Deploy octavia
         env:
-          AZURE_BLOB_STORAGE_KEY: ${{ secrets.AZURE_BLOB_STORAGE_KEY }}
+          AZURE_BLOB_STORAGE_KEY: ${{ secrets.AZURE_BLOB_STORAGE_KEY }} # todo: fix this, as this will not set the environment variable for docker image.
         run: |
           source /tmp/rcfile
           sudo ./copy_template_files.sh
