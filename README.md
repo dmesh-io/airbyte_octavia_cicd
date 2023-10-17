@@ -53,4 +53,4 @@ Octavia enables using yaml files for configuring these three connection types. E
 
 Octavia/Airbyte helps you with providing empty yaml files for each connector. You just have to fill in your application specific data like connection strings, environment variables linking to secrets, ...
 
-The process of generating these empty templates can be found [here](https://medium.com/@jeremysrgt/airbyte-configuration-as-code-with-octavia-cli-dccd2046b764). You can try deploying these in your local workspace. When working as desired, they can be checked into version control in the `airbyte_cnnection_templates` folder and will be considered by the ci/cd pipeline.
+The process of generating these empty templates can be found [here](https://medium.com/@jeremysrgt/airbyte-configuration-as-code-with-octavia-cli-dccd2046b764). You can try deploying these in your local workspace. When working as desired, they can be checked into version control in the `airbyte_connection_templates` folder and will be considered by the ci/cd pipeline.
