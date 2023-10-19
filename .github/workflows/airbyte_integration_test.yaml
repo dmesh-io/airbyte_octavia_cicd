@@ -51,11 +51,17 @@ jobs:
 
       - name: Deploy octavia
         env:
-          AZURE_BLOB_STORAGE_KEY: ${{ secrets.AZURE_BLOB_STORAGE_KEY }} # todo: fix this, as this will not set the environment variable for docker image.
+          # https://stackoverflow.com/questions/60176044/how-do-i-use-an-env-file-with-github-actions
+          AZURE_BLOB_STORAGE_KEY: ${{ secrets.AZURE_BLOB_STORAGE_KEY }}
         run: |
+          echo $AZURE_BLOB_STORAGE_KEY > ~/.env
+          export OCTAVIA_ENV_FILE=~/.env
           source /tmp/rcfile
           sudo ./copy_template_files.sh
           cd octavia && octavia apply --force
+      - name: Always destroy .env OCTAVIA_ENV_FILE
+        run: rm ~/.env
+        if: always()
 
       - name: Trigger manual synchronization
         run: python manually_trigger_sync.py
